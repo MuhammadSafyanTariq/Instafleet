@@ -5,6 +5,11 @@ import 'welcome_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
+import 'social_feed_screen.dart';
+import 'explore_screen.dart';
+import 'notifications_screen.dart';
+import 'camera_screen.dart';
+import 'story_viewer_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false, // Remove debug banner
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -30,6 +36,19 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/forgot': (context) => const ForgotPasswordScreen(),
+        '/home': (context) => const SocialFeedScreen(),
+        '/explore': (context) => const ExploreScreen(),
+        '/notifications': (context) => const NotificationsScreen(),
+        '/camera': (context) => const CameraScreen(),
+        '/story': (context) {
+          final args =
+              ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+          return StoryViewerScreen(
+            userName: args['userName']!,
+            userImage: args['userImage']!,
+            storyImage: args['storyImage']!,
+          );
+        },
       },
     );
   }
@@ -147,6 +166,7 @@ class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
 // alkdfj;lakds
 
 // hello
+
 
 
 // test

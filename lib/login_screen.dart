@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _passwordController.text.trim(),
         );
         if (mounted) {
-          Navigator.of(context).pushReplacementNamed('/welcome');
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       } catch (e) {
         setState(() {
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await AuthService().signInWithGoogle();
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/welcome');
+        Navigator.of(context).pushReplacementNamed('/home');
       }
     } catch (e) {
       setState(() {
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await AuthService().signInWithApple();
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/welcome');
+        Navigator.of(context).pushReplacementNamed('/home');
       }
     } catch (e) {
       setState(() {
