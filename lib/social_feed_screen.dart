@@ -175,14 +175,7 @@ class StoriesSection extends StatelessWidget {
                     width: 66,
                     height: 79,
                     decoration: isAddButton
-                        ? BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.white.withOpacity(0.1),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1,
-                            ),
-                          )
+                        ? null // Remove old decoration for add button
                         : BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             gradient: const LinearGradient(
@@ -192,19 +185,49 @@ class StoriesSection extends StatelessWidget {
                             ),
                           ),
                     child: isAddButton
-                        ? Center(
-                            child: ShaderMask(
-                              shaderCallback: (bounds) => const LinearGradient(
-                                colors: [Color(0xFFB968C7), Color(0xFF6B73FF)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ).createShader(bounds),
-                              child: SvgPicture.asset(
-                                'assets/icons/plus.svg',
-                                height: 24,
-                                width: 24,
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.white, BlendMode.srcIn),
+                        ? Container(
+                            width: 66,
+                            height: 79,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2A2A2A),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: ShaderMask(
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFFFFFF),
+                                    Color(0xFFF472B6),
+                                    Color(0xFFE879F9),
+                                    Color(0xFFD946EF),
+                                    Color(0xFFA855F7),
+                                    Color(0xFF8B5CF6),
+                                    Color(0xFF6366F1),
+                                    Color(0xFF3B82F6),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  stops: [
+                                    0.0,
+                                    0.2,
+                                    0.3,
+                                    0.4,
+                                    0.5,
+                                    0.6,
+                                    0.8,
+                                    1.0
+                                  ],
+                                ).createShader(bounds),
+                                child: const Icon(
+                                  Icons.add_rounded,
+                                  size: 32,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           )
@@ -319,10 +342,10 @@ class FeedPost extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on,
                             size: 12,
-                            color: const Color(0xFF9E9E9E),
+                            color: Color(0xFF9E9E9E),
                           ),
                           const SizedBox(width: 4),
                           Text(
@@ -364,7 +387,7 @@ class FeedPost extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Engagement Row
-                      Container(
+                      SizedBox(
                         width: 243,
                         height: 24,
                         child: Row(
@@ -459,7 +482,7 @@ class FeedPost extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
+        const Icon(
           Icons.favorite,
           size: 24,
           color: Colors.red,
@@ -610,7 +633,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 80,
       child: Stack(
         clipBehavior: Clip.none,
@@ -651,7 +674,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
               onTapDown: (_) => _fabAnimationController.forward(),
               onTapUp: (_) => _fabAnimationController.reverse(),
               onTapCancel: () => _fabAnimationController.reverse(),
-              onTap: () => widget.onTap(4),
+              onTap: () {
+                Navigator.of(context).pushNamed('/groups');
+              },
               child: AnimatedBuilder(
                 animation: _fabScaleAnimation,
                 builder: (context, child) {
@@ -686,7 +711,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
                           ),
                         ],
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Icon(
                           Icons.storefront_rounded,
                           size: 20,
@@ -712,6 +737,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
         if (index == 1) {
           // Explore button
           Navigator.of(context).pushNamed('/explore');
+        } else if (index == 2) {
+          // Chat button
+          Navigator.of(context).pushNamed('/messages');
         } else {
           widget.onTap(index);
         }

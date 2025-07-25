@@ -169,8 +169,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Email is required';
+                      }
                       if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
                           .hasMatch(value)) return 'Enter a valid email';
                       return null;
@@ -196,10 +197,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Phone number is required';
-                      if (!RegExp(r'^[0-9]{10,15}$').hasMatch(value))
+                      }
+                      if (!RegExp(r'^[0-9]{10,15}$').hasMatch(value)) {
                         return 'Enter a valid phone number';
+                      }
                       return null;
                     },
                   ),
@@ -236,10 +239,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Password is required';
-                      if (value.length < 6)
+                      }
+                      if (value.length < 6) {
                         return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
                   ),
@@ -276,10 +281,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Confirm your password';
-                      if (value != _passwordController.text)
+                      }
+                      if (value != _passwordController.text) {
                         return 'Passwords do not match';
+                      }
                       return null;
                     },
                   ),
@@ -298,11 +305,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         backgroundColor: Colors.transparent,
                       ).copyWith(
                         backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>((states) {
+                            WidgetStateProperty.resolveWith<Color?>((states) {
                           return null;
                         }),
                         shadowColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                            WidgetStateProperty.all(Colors.transparent),
                       ),
                       child: _loading
                           ? const CircularProgressIndicator(color: Colors.white)
@@ -333,19 +340,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Row(
+                  const Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Divider(color: Colors.white24, thickness: 1),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           'Or',
                           style: TextStyle(color: Colors.white54, fontSize: 16),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Divider(color: Colors.white24, thickness: 1),
                       ),
                     ],

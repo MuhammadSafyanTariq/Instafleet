@@ -130,15 +130,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
           color: const Color(0xFF2A2A2A),
           borderRadius: BorderRadius.circular(23),
         ),
-        child: TextField(
-          style: const TextStyle(color: Colors.white),
+        child: const TextField(
+          style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: 'Search for page, post or hashtags',
-            hintStyle: const TextStyle(
+            hintStyle: TextStyle(
               color: Color(0xFF888888),
               fontSize: 16,
             ),
-            prefixIcon: const Padding(
+            prefixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Icon(
                 Icons.search,
@@ -147,7 +147,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
             ),
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 13,
             ),
@@ -165,7 +165,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget _buildFilterChips() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
+      child: SizedBox(
         width: 335,
         height: 25,
         child: ListView.builder(
@@ -394,19 +394,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
             child: Column(
               children: [
                 // Left Item 1
-                Container(
+                SizedBox(
                   height: leftColumnHeights[0], // 160
                   child: _buildPostItem(0),
                 ),
                 const SizedBox(height: 8),
                 // Left Item 2
-                Container(
+                SizedBox(
                   height: leftColumnHeights[1], // 200
                   child: _buildPostItem(2),
                 ),
                 const SizedBox(height: 8),
                 // Left Item 3
-                Container(
+                SizedBox(
                   height: leftColumnHeights[2], // 180
                   child: _buildPostItem(4),
                 ),
@@ -422,19 +422,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
             child: Column(
               children: [
                 // Right Item 1
-                Container(
+                SizedBox(
                   height: rightColumnHeights[0], // 220
                   child: _buildPostItem(1),
                 ),
                 const SizedBox(height: 8),
                 // Right Item 2
-                Container(
+                SizedBox(
                   height: rightColumnHeights[1], // 140
                   child: _buildPostItem(3),
                 ),
                 const SizedBox(height: 8),
                 // Right Item 3
-                Container(
+                SizedBox(
                   height: rightColumnHeights[2], // 190
                   child: _buildPostItem(5),
                 ),
@@ -528,7 +528,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 80,
       child: Stack(
         clipBehavior: Clip.none,
@@ -569,7 +569,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
               onTapDown: (_) => _fabAnimationController.forward(),
               onTapUp: (_) => _fabAnimationController.reverse(),
               onTapCancel: () => _fabAnimationController.reverse(),
-              onTap: () => widget.onTap(4),
+              onTap: () {
+                Navigator.of(context).pushNamed('/groups');
+              },
               child: AnimatedBuilder(
                 animation: _fabScaleAnimation,
                 builder: (context, child) {

@@ -50,8 +50,9 @@ class AuthService {
 
   // Apple sign in
   Future<User?> signInWithApple() async {
-    if (!Platform.isIOS && !kIsWeb)
+    if (!Platform.isIOS && !kIsWeb) {
       throw Exception('Apple Sign-In only available on iOS or Web');
+    }
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,

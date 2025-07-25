@@ -10,6 +10,12 @@ import 'explore_screen.dart';
 import 'notifications_screen.dart';
 import 'camera_screen.dart';
 import 'story_viewer_screen.dart';
+import 'messages_screen.dart';
+import 'groups_screen.dart';
+import 'create_community_screen.dart';
+import 'community_detail_screen.dart';
+import 'community_members_screen.dart';
+import 'chat_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +55,13 @@ class MyApp extends StatelessWidget {
             storyImage: args['storyImage']!,
           );
         },
+        '/messages': (context) => const MessagesScreen(),
+        '/groups': (context) => const GroupsScreen(),
+        '/create_community': (context) => const CreateCommunityScreen(),
+        '/community_detail': (context) => const CommunityDetailScreen(),
+        '/community_members': (context) => const CommunityMembersScreen(),
+        '/chat': (context) => const ChatScreen(),
+        '/profile': (context) => const ProfileScreen(),
       },
     );
   }

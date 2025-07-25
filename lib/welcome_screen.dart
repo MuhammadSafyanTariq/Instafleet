@@ -60,12 +60,11 @@ class WelcomeScreen extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                         ).copyWith(
                           backgroundColor:
-                              MaterialStateProperty.resolveWith<Color?>(
-                                  (states) {
+                              WidgetStateProperty.resolveWith<Color?>((states) {
                             return null;
                           }),
                           shadowColor:
-                              MaterialStateProperty.all(Colors.transparent),
+                              WidgetStateProperty.all(Colors.transparent),
                         ),
                         child: Ink(
                           decoration: BoxDecoration(
@@ -125,14 +124,13 @@ class WelcomeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 32.0),
                     child: RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         text: 'Do you represent a company? ',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                         children: [
                           TextSpan(
                             text: 'Start here',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,

@@ -81,10 +81,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                   ).copyWith(
                     backgroundColor:
-                        MaterialStateProperty.resolveWith<Color?>((states) {
+                        WidgetStateProperty.resolveWith<Color?>((states) {
                       return null;
                     }),
-                    shadowColor: MaterialStateProperty.all(Colors.transparent),
+                    shadowColor: WidgetStateProperty.all(Colors.transparent),
                   ),
                   child: Ink(
                     decoration: BoxDecoration(

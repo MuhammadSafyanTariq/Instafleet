@@ -152,8 +152,8 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: Container(
                         width: 80,
                         height: 80,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
                             colors: [
                               Color(0xFFDA21AD), // Pink (0%)
                               Color(0xFF816EC9), // Purple (50%)

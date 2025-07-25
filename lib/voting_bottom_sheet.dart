@@ -135,7 +135,7 @@ class _VotingBottomSheetState extends State<VotingBottomSheet> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ).createShader(bounds),
-            child: Text(
+            child: const Text(
               'Leadership board',
               style: TextStyle(
                 color: Colors.white,

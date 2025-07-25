@@ -62,8 +62,8 @@ class CustomHeartIconButton extends StatelessWidget {
 
           // Gradient heart fill
           Container(
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 colors: [
                   Color(0xFFFF69B4), // Pink
                   Color(0xFF6B73FF), // Blue/Purple

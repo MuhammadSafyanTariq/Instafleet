@@ -162,8 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Email is required';
+                      }
                       if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
                           .hasMatch(value)) return 'Enter a valid email';
                       return null;
@@ -202,10 +203,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Password is required';
-                      if (value.length < 6)
+                      }
+                      if (value.length < 6) {
                         return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
                   ),
@@ -240,11 +243,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor: Colors.transparent,
                       ).copyWith(
                         backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>((states) {
+                            WidgetStateProperty.resolveWith<Color?>((states) {
                           return null;
                         }),
                         shadowColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                            WidgetStateProperty.all(Colors.transparent),
                       ),
                       child: _loading
                           ? const CircularProgressIndicator(color: Colors.white)
