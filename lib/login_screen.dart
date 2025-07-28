@@ -258,8 +258,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Color(0xFFEC008C),
                                     Color(0xFF00B5E2)
                                   ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
                                 borderRadius: BorderRadius.circular(16),
                               ),

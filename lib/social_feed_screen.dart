@@ -11,8 +11,6 @@ class SocialFeedScreen extends StatefulWidget {
 }
 
 class _SocialFeedScreenState extends State<SocialFeedScreen> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +60,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: CustomBottomNavBar(
-        selectedIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
       ),
     );
   }
@@ -534,10 +528,12 @@ class FeedPost extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: Icon(
-                Icons.share_outlined,
-                size: 16,
-                color: Colors.grey[400],
+              child: SvgPicture.asset(
+                'assets/icons/share1.svg',
+                height: 16,
+                width: 16,
+                colorFilter:
+                    ColorFilter.mode(Colors.grey[400]!, BlendMode.srcIn),
               ),
             ),
           ),
@@ -587,244 +583,6 @@ class FeedPost extends StatelessWidget {
 
     return content;
   }
-}
-
-// Custom Bottom Navigation Bar
-class CustomBottomNavBar extends StatefulWidget {
-  final int selectedIndex;
-  final Function(int) onTap;
-
-  const CustomBottomNavBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onTap,
-  });
-
-  @override
-  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
-}
-
-class _CustomBottomNavBarState extends State<CustomBottomNavBar>
-    with TickerProviderStateMixin {
-  late AnimationController _fabAnimationController;
-  late Animation<double> _fabScaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _fabScaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    ));
-  }
-
-  @override
-  void dispose() {
-    _fabAnimationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Custom Paint for Curve with dark background
-          CustomPaint(
-            size: Size(MediaQuery.of(context).size.width, 80),
-            painter: ModernBottomNavPainter(),
-          ),
-          // Navigation Items
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 80,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildNavItem(0, 'assets/icons/home.png', 'Home', true),
-                  _buildNavItem(
-                      1, 'assets/icons/explore.svg', 'Explore', false),
-                  const SizedBox(width: 64), // Space for FAB
-                  _buildNavItem(2, 'assets/icons/chat.svg', 'Chat', false),
-                  _buildNavItem(
-                      3, 'assets/icons/profile.svg', 'Profile', false),
-                ],
-              ),
-            ),
-          ),
-          // Floating Action Button with glow
-          Positioned(
-            top: -12,
-            left: MediaQuery.of(context).size.width / 2 - 24,
-            child: GestureDetector(
-              onTapDown: (_) => _fabAnimationController.forward(),
-              onTapUp: (_) => _fabAnimationController.reverse(),
-              onTapCancel: () => _fabAnimationController.reverse(),
-              onTap: () {
-                Navigator.of(context).pushNamed('/groups');
-              },
-              child: AnimatedBuilder(
-                animation: _fabScaleAnimation,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _fabScaleAnimation.value,
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFB968C7),
-                            Color(0xFF6B73FF)
-                          ], // Purple to Blue
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          // Glow effect
-                          BoxShadow(
-                            color: const Color(0xFFB968C7).withOpacity(0.4),
-                            blurRadius: 16,
-                            offset: const Offset(0, 4),
-                            spreadRadius: 2,
-                          ),
-                          // Elevation shadow
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.storefront_rounded,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(int index, String iconPath, String label, bool isPng) {
-    final isSelected = widget.selectedIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        if (index == 1) {
-          // Explore button
-          Navigator.of(context).pushNamed('/explore');
-        } else if (index == 2) {
-          // Chat button
-          Navigator.of(context).pushNamed('/messages');
-        } else {
-          widget.onTap(index);
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedScale(
-              scale: isSelected ? 1.1 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              child: isPng
-                  ? Image.asset(
-                      iconPath,
-                      height: 24,
-                      width: 24,
-                      color:
-                          isSelected ? const Color(0xFF9C27B0) : Colors.white,
-                    )
-                  : SvgPicture.asset(
-                      iconPath,
-                      height: 24,
-                      width: 24,
-                      colorFilter: ColorFilter.mode(
-                        isSelected ? const Color(0xFF9C27B0) : Colors.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-            ),
-            const SizedBox(height: 4),
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                color: isSelected ? const Color(0xFF9C27B0) : Colors.white,
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
-              child: Text(label),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Modern Bottom Navigation Bar Painter
-class ModernBottomNavPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1C1C1C) // Slightly lighter dark background
-      ..style = PaintingStyle.fill;
-
-    final path = Path();
-
-    // Start from bottom left
-    path.moveTo(0, size.height);
-    path.lineTo(0, 15);
-
-    // Left side to curve start
-    path.lineTo(size.width * 0.38, 15);
-
-    // Create subtle curved cutout for FAB
-    path.quadraticBezierTo(size.width * 0.42, 15, size.width * 0.46, 8);
-    path.quadraticBezierTo(size.width * 0.49, 3, size.width * 0.5, 3);
-    path.quadraticBezierTo(size.width * 0.51, 3, size.width * 0.54, 8);
-    path.quadraticBezierTo(size.width * 0.58, 15, size.width * 0.62, 15);
-
-    // Right side
-    path.lineTo(size.width, 15);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-
-    // Add subtle shadow for depth
-    canvas.drawShadow(path, Colors.black.withOpacity(0.2), 8, false);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 // Custom Send Button Widget

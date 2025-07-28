@@ -16,6 +16,17 @@ import 'create_community_screen.dart';
 import 'community_detail_screen.dart';
 import 'community_members_screen.dart';
 import 'chat_screen.dart';
+import 'profile_screen.dart';
+import 'change_avatar_screen.dart';
+import 'settings_screen.dart';
+import 'privacy_screen.dart';
+import 'app_preference_screen.dart';
+import 'help_support_screen.dart';
+import 'my_ads_screen.dart';
+import 'create_add_screen.dart';
+import 'edit_profile_screen.dart';
+import 'contest_screen.dart';
+import 'widgets/main_navigation_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,8 +53,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/forgot': (context) => const ForgotPasswordScreen(),
-        '/home': (context) => const SocialFeedScreen(),
-        '/explore': (context) => const ExploreScreen(),
+        '/home': (context) => const MainNavigationWrapper(initialIndex: 0),
+        '/explore': (context) => const MainNavigationWrapper(initialIndex: 1),
         '/notifications': (context) => const NotificationsScreen(),
         '/camera': (context) => const CameraScreen(),
         '/story': (context) {
@@ -55,13 +66,21 @@ class MyApp extends StatelessWidget {
             storyImage: args['storyImage']!,
           );
         },
-        '/messages': (context) => const MessagesScreen(),
         '/groups': (context) => const GroupsScreen(),
         '/create_community': (context) => const CreateCommunityScreen(),
         '/community_detail': (context) => const CommunityDetailScreen(),
         '/community_members': (context) => const CommunityMembersScreen(),
         '/chat': (context) => const ChatScreen(),
-        '/profile': (context) => const ProfileScreen(),
+        '/profile': (context) => const MainNavigationWrapper(initialIndex: 3),
+        '/change-avatar': (context) => const ChangeAvatarScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/privacy': (context) => const PrivacyScreen(),
+        '/app-preference': (context) => const AppPreferenceScreen(),
+        '/help-support': (context) => const HelpSupportScreen(),
+        '/my-ads': (context) => const MyAdsScreen(),
+        '/create-add': (context) => const CreateAddScreen(),
+        '/edit-profile': (context) => const EditProfileScreen(),
+        '/contest': (context) => const ContestScreen(),
       },
     );
   }

@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'create_community_screen.dart';
+import 'chat_screen.dart';
+import 'messages_screen.dart';
+import 'widgets/custom_bottom_nav_bar.dart';
 
 // ═══════════════════════════════════════════════════════════
 // GROUPS SCREEN - Main Screen Widget
 // ═══════════════════════════════════════════════════════════
 class GroupsScreen extends StatefulWidget {
-  const GroupsScreen({super.key});
+  final bool showBottomNav;
+
+  const GroupsScreen({
+    super.key,
+    this.showBottomNav = true,
+  });
 
   @override
   State<GroupsScreen> createState() => _GroupsScreenState();
 }
 
 class _GroupsScreenState extends State<GroupsScreen> {
-  int _selectedTabIndex = 0;
+  int _selectedTabIndex = 0; // 0 for My Groups, 1 for Messages
 
   // Sample groups data
   final List<Map<String, String>> _groups = [
@@ -53,15 +61,41 @@ class _GroupsScreenState extends State<GroupsScreen> {
             const SizedBox(height: 24),
             _buildTabs(),
             const SizedBox(height: 24),
-            Expanded(child: _buildGroupsList()),
+            Expanded(
+              child: _selectedTabIndex == 0
+                  ? _buildGroupsList()
+                  : _buildMessagesTab(),
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+
       floatingActionButton: MediaQuery.of(context).viewInsets.bottom == 0
           ? _buildPlusButton()
           : null, // Hide plus button when keyboard is visible
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: widget.showBottomNav
+          ? CustomBottomNavBar(
+              selectedIndex: -1, // No tab selected for groups (center FAB)
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    Navigator.pushReplacementNamed(context, '/home');
+                    break;
+                  case 1:
+                    Navigator.pushReplacementNamed(context, '/explore');
+                    break;
+                  case 2:
+                    // Messages icon - navigate to groups
+                    Navigator.pushReplacementNamed(context, '/groups');
+                    break;
+                  case 3:
+                    Navigator.pushReplacementNamed(context, '/profile');
+                    break;
+                }
+              },
+            )
+          : null,
     );
   }
 
@@ -130,50 +164,56 @@ class _GroupsScreenState extends State<GroupsScreen> {
               ),
               Expanded(
                 child: Center(
-                  child: _buildTab('Discover', 1),
+                  child: _buildTab('Messages', 1),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          // Split gradient line - 50% for each tab
-          Row(
-            children: [
-              // Left half - for "My Groups"
-              Expanded(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: _selectedTabIndex == 0 ? 2 : 0,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFB968C7), // Purple/Pink
-                        Color(0xFF6B73FF) // Blue
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+          // Gradient line container
+          Container(
+            height: 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1),
+            ),
+            child: Row(
+              children: [
+                // Left half - for "My Groups"
+                Expanded(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: _selectedTabIndex == 0 ? 2 : 0,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFB968C7), // Purple/Pink
+                          Color(0xFF6B73FF) // Blue
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // Right half - for "Discover"
-              Expanded(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: _selectedTabIndex == 1 ? 2 : 0,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFB968C7), // Purple/Pink
-                        Color(0xFF6B73FF) // Blue
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                // Right half - for "Messages"
+                Expanded(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: _selectedTabIndex == 1 ? 2 : 0,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFB968C7), // Purple/Pink
+                          Color(0xFF6B73FF) // Blue
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -184,7 +224,11 @@ class _GroupsScreenState extends State<GroupsScreen> {
     final isSelected = _selectedTabIndex == index;
 
     return GestureDetector(
-      onTap: () => setState(() => _selectedTabIndex = index),
+      onTap: () {
+        setState(() {
+          _selectedTabIndex = index;
+        });
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -387,16 +431,6 @@ class _GroupsScreenState extends State<GroupsScreen> {
   }
 
   // ═══════════════════════════════════════════════════════════
-  // BOTTOM NAVIGATION BAR
-  // ═══════════════════════════════════════════════════════════
-  Widget _buildBottomNavBar() {
-    return CustomBottomNavBar(
-      selectedIndex: 2, // Groups is selected (center button index)
-      onTap: _handleNavigation,
-    );
-  }
-
-  // ═══════════════════════════════════════════════════════════
   // EVENT HANDLERS
   // ═══════════════════════════════════════════════════════════
   void _handleCreateGroup() {
@@ -408,265 +442,10 @@ class _GroupsScreenState extends State<GroupsScreen> {
     );
   }
 
-  void _handleNavigation(int index) {
-    if (index == 0) {
-      Navigator.of(context).pushReplacementNamed('/home');
-    }
-    // Handle other navigation as needed
+  // ═══════════════════════════════════════════════════════════
+  // MESSAGES TAB WIDGET
+  // ═══════════════════════════════════════════════════════════
+  Widget _buildMessagesTab() {
+    return const MessagesScreen();
   }
-}
-
-// ═══════════════════════════════════════════════════════════
-// CUSTOM BOTTOM NAVIGATION BAR
-// ═══════════════════════════════════════════════════════════
-class CustomBottomNavBar extends StatefulWidget {
-  final int selectedIndex;
-  final Function(int) onTap;
-
-  const CustomBottomNavBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onTap,
-  });
-
-  @override
-  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
-}
-
-class _CustomBottomNavBarState extends State<CustomBottomNavBar>
-    with TickerProviderStateMixin {
-  late AnimationController _fabAnimationController;
-  late Animation<double> _fabScaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeAnimations();
-  }
-
-  @override
-  void dispose() {
-    _fabAnimationController.dispose();
-    super.dispose();
-  }
-
-  void _initializeAnimations() {
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _fabScaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          _buildCustomPaint(),
-          _buildNavigationItems(),
-          _buildCenterFloatingButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCustomPaint() {
-    return CustomPaint(
-      size: Size(MediaQuery.of(context).size.width, 80),
-      painter: ModernBottomNavPainter(),
-    );
-  }
-
-  Widget _buildNavigationItems() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Container(
-        height: 80,
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildNavItem(0, 'assets/icons/home.png', 'Home', true),
-            _buildNavItem(1, 'assets/icons/explore.svg', 'Explore', false),
-            const SizedBox(width: 64), // Space for FAB
-            _buildNavItem(2, 'assets/icons/chat.svg', 'Chat', false),
-            _buildNavItem(3, 'assets/icons/profile.svg', 'Profile', false),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCenterFloatingButton() {
-    return Positioned(
-      top: -12,
-      left: MediaQuery.of(context).size.width / 2 - 24,
-      child: GestureDetector(
-        onTapDown: (_) => _fabAnimationController.forward(),
-        onTapUp: (_) => _fabAnimationController.reverse(),
-        onTapCancel: () => _fabAnimationController.reverse(),
-        onTap: () {}, // Already on groups screen
-        child: AnimatedBuilder(
-          animation: _fabScaleAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _fabScaleAnimation.value,
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFB968C7), Color(0xFF6B73FF)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFB968C7).withOpacity(0.4),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                      spreadRadius: 2,
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.storefront_rounded,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(int index, String iconPath, String label, bool isPng) {
-    final isSelected = widget.selectedIndex == index;
-
-    return GestureDetector(
-      onTap: () => _handleNavItemTap(index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedScale(
-              scale: isSelected ? 1.1 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              child: _buildNavIcon(iconPath, isSelected, isPng),
-            ),
-            const SizedBox(height: 4),
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                color: isSelected ? const Color(0xFF9C27B0) : Colors.white,
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
-              child: Text(label),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavIcon(String iconPath, bool isSelected, bool isPng) {
-    final color = isSelected ? const Color(0xFF9C27B0) : Colors.white;
-
-    return isPng
-        ? Image.asset(iconPath, height: 24, width: 24, color: color)
-        : SvgPicture.asset(
-            iconPath,
-            height: 24,
-            width: 24,
-            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-          );
-  }
-
-  void _handleNavItemTap(int index) {
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacementNamed('/home');
-        break;
-      case 1:
-        Navigator.of(context).pushNamed('/explore');
-        break;
-      case 2:
-        Navigator.of(context).pushNamed('/messages');
-        break;
-      default:
-        widget.onTap(index);
-    }
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-// MODERN BOTTOM NAVIGATION PAINTER
-// ═══════════════════════════════════════════════════════════
-class ModernBottomNavPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1C1C1C)
-      ..style = PaintingStyle.fill;
-
-    final path = _createNavBarPath(size);
-
-    // Add shadow for depth
-    canvas.drawShadow(path, Colors.black.withOpacity(0.2), 8, false);
-    canvas.drawPath(path, paint);
-  }
-
-  Path _createNavBarPath(Size size) {
-    final path = Path();
-
-    // Start from bottom left
-    path.moveTo(0, size.height);
-    path.lineTo(0, 15);
-
-    // Left side to curve start
-    path.lineTo(size.width * 0.38, 15);
-
-    // Create curved cutout for FAB
-    path.quadraticBezierTo(size.width * 0.42, 15, size.width * 0.46, 8);
-    path.quadraticBezierTo(size.width * 0.49, 3, size.width * 0.5, 3);
-    path.quadraticBezierTo(size.width * 0.51, 3, size.width * 0.54, 8);
-    path.quadraticBezierTo(size.width * 0.58, 15, size.width * 0.62, 15);
-
-    // Right side
-    path.lineTo(size.width, 15);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
