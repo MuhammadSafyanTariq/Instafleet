@@ -154,16 +154,24 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
                                         end: Alignment.bottomRight,
                                       ).createShader(bounds);
                                     },
-                                    child: const Icon(
-                                      Icons.storefront_rounded,
-                                      size: 18,
-                                      color: Colors.white,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/contest.svg',
+                                      width: 18,
+                                      height: 18,
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.white,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                   )
-                                : const Icon(
-                                    Icons.storefront_rounded,
-                                    size: 18,
-                                    color: Colors.white,
+                                : SvgPicture.asset(
+                                    'assets/icons/contest.svg',
+                                    width: 18,
+                                    height: 18,
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                           ),
                         ),
