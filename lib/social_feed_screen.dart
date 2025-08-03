@@ -382,12 +382,13 @@ class FeedPost extends StatelessWidget {
                     children: [
                       // Engagement Row
                       SizedBox(
-                        width: 243,
+                        width: 320,
                         height: 24,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             _buildLikeButton(likes),
+                            const SizedBox(width: 24),
                             _buildEngagementButton(
                               'assets/icons/comment.svg',
                               comments,
@@ -407,6 +408,7 @@ class FeedPost extends StatelessWidget {
                                 );
                               },
                             ),
+                            const SizedBox(width: 24),
                             _buildEngagementButton(
                               'assets/icons/voting.svg',
                               shares,
@@ -426,11 +428,8 @@ class FeedPost extends StatelessWidget {
                                 );
                               },
                             ),
-                            _buildEngagementButton(
-                              'assets/icons/store.svg',
-                              saves,
-                              Colors.white,
-                            ),
+                            const SizedBox(width: 24),
+                            _buildShareButton('5.2K'),
                           ],
                         ),
                       ),
@@ -498,47 +497,13 @@ class FeedPost extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 32,
-          height: 32,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFB968C7), Color(0xFF6B73FF)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFFB968C7).withOpacity(0.4),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-              BoxShadow(
-                color: const Color(0xFF6B73FF).withOpacity(0.2),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Container(
-            margin: const EdgeInsets.all(1.5), // Creates the ring effect
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: SvgPicture.asset(
-                'assets/icons/share1.svg',
-                height: 16,
-                width: 16,
-                colorFilter:
-                    ColorFilter.mode(Colors.grey[400]!, BlendMode.srcIn),
-              ),
-            ),
-          ),
+        SvgPicture.asset(
+          'assets/icons/share1.svg',
+          height: 16,
+          width: 16,
+          colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 4),
         Text(
           count,
           style: const TextStyle(

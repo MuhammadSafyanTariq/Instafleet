@@ -460,24 +460,23 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen>
                     children: [
                       // Engagement Row
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           _buildLikeButton('100K'),
+                          const SizedBox(width: 24),
                           _buildEngagementButton(
                             'assets/icons/comment.svg',
                             '2.5K',
                             Colors.white,
                           ),
+                          const SizedBox(width: 24),
                           _buildEngagementButton(
                             'assets/icons/voting.svg',
                             '20K',
                             Colors.white,
                           ),
-                          _buildEngagementButton(
-                            'assets/icons/store.svg',
-                            '45K',
-                            Colors.white,
-                          ),
+                          const SizedBox(width: 24),
+                          _buildShareButton('45K'),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -570,6 +569,29 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen>
     }
 
     return content;
+  }
+
+  Widget _buildShareButton(String count) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          'assets/icons/share1.svg',
+          height: 16,
+          width: 16,
+          colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          count,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildActionButton(IconData icon, String count, Color color) {

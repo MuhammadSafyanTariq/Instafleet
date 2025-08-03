@@ -127,23 +127,6 @@ class _VotingBottomSheetState extends State<VotingBottomSheet> {
               ),
             ),
           ),
-
-          // Leadership Board Text with Gradient
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Color(0xFFB968C7), Color(0xFF6B73FF)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ).createShader(bounds),
-            child: const Text(
-              'Leadership board',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
         ],
       ),
     );
